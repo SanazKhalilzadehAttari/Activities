@@ -1,18 +1,42 @@
 import React from "react";
+import { ChangeEvent } from "react";
+import { useState } from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
-
-export default function ActivityForm(){
+import { Activity } from "../../../app/models/Activity";
+interface Props{
+    activity :Activity |undefined;
+    closeForm: ()=> void;
+    createOrEdit : (activity:Activity)=>void;
+}
+export default function ActivityForm({activity:selectedActivity,closeForm,createOrEdit}: Props){
+    const initialState = selectedActivity ?? {
+        id:'',
+        title:'',
+        category :'',
+        description:'',
+        date:'',
+        city:'',
+        venue:''
+    }
+    const[activity,setActivity]= useState(initialState);
+    function handelSubmit(){
+        createOrEdit(activity);
+    }
+    function handelInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>){
+        const{name,value}=event.target;
+        setActivity({...activity,[name]:value})
+    }
     return(
         <Segment clearing>
-            <Form>
-                <Form.Input placeholder='Title'/>
-                <Form.TextArea placeholder='Description'/>
-                <Form.Input placeholder='Category'/>
-                <Form.Input placeholder='Date'/>
-                <Form.Input placeholder='City'/>
-                <Form.Input placeholder='Venue'/>
-               <Button floated='right' positive type="submit" content="Submit"></Button>
-               <Button floated='right'  type="submit" content="Cancel"></Button>
+            <Form onSubmit={handelSubmit} autoCompelete='off'>
+                <Form.Input placeholder='Title' value={activity.title} name='title' onChange={handelInputChange}/>
+                <Form.TextArea placeholder='Description'value={activity.description} name='description' onChange={handelInputChange}/>
+                <Form.Input placeholder='Category'value={activity.category} name='category' onChange={handelInputChange}/>
+                <Form.Input placeholder='Date'value={activity.date} name='date' onChange={handelInputChange}/>
+                <Form.Input placeholder='City'value={activity.city} name='city' onChange={handelInputChange}/>
+                <Form.Input placeholder='Venue'value={activity.venue} name='venue' onChange={handelInputChange}/>
+               <Button floated='right' positive type="submit" content="Submit" ></Button>
+               <Button floated='right'  type="submit" content="Cancel" onClick={closeForm}></Button>
             </Form>
         </Segment>
     )
