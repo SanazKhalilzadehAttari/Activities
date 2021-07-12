@@ -1,11 +1,12 @@
 import React from "react";
+import { SyntheticEvent } from "react";
 import { Grid, GridColumn, List } from "semantic-ui-react";
 import { Activity } from "../../../app/models/Activity";
 import ActivityDetails from "../details/ActivityDetails";
 import ActivityForm from "../form/ActivityForm";
 import ActivityList from "./ActivityList";
 
-interface Props{
+interface IProps{
     activities : Activity[];
     selectedActivity: Activity | undefined;
     selectActivity: (id: string) => void ;
@@ -14,15 +15,17 @@ interface Props{
     openForm:(id :string) => void;
     closeForm:() => void;
     createOrEdit : (activity:Activity)=>void;
-    deleteActivity:(id:string) => void;
+    deleteActivity:(e:SyntheticEvent<HTMLButtonElement>, id:string) => void;
+    submitting: boolean,
+    target:string
 }
 
-    export default function ActivityDashboard({activities,selectedActivity,selectActivity,
-        cancelSelectActivity,editMode,openForm,closeForm,createOrEdit,deleteActivity}: Props){
+    const ActivityDashboard : React.FC<IProps> = ({target,activities,selectedActivity,selectActivity,
+        cancelSelectActivity,editMode,openForm,closeForm,createOrEdit,deleteActivity,submitting})=>{
     return(
         <Grid>
             <GridColumn width="10">
-                <ActivityList activities={activities} selectActivity={selectActivity} deleteActivity={deleteActivity}/>
+                <ActivityList target={target} submitting={submitting} activities={activities} selectActivity={selectActivity} deleteActivity={deleteActivity}/>
             </GridColumn>
             <GridColumn width="6">
                 {selectedActivity && !editMode  &&
@@ -31,8 +34,9 @@ interface Props{
                 openForm = {openForm}
                 />}
                 {editMode &&
-            <ActivityForm  createOrEdit={createOrEdit} closeForm={closeForm} activity ={selectedActivity}/>}
+            <ActivityForm  submitting={submitting} key={selectedActivity?.id} createOrEdit={createOrEdit} closeForm={closeForm} activity ={selectedActivity}/>}
             </GridColumn>
         </Grid>
     )
 }
+export default ActivityDashboard;

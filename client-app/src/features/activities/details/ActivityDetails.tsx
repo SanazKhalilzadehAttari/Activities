@@ -1,13 +1,13 @@
 import React from "react";
 import { Button, Card, Icon, Image } from "semantic-ui-react";
 import { Activity } from "../../../app/models/Activity";
-interface Props{
+interface IProps{
     activity:Activity;
     cancelSelectActivity: () => void;
     openForm:(id :string) => void;
   
 }
-export default function ActivityDetails({activity, cancelSelectActivity,openForm}:Props){
+const ActivityDetails:React.FC<IProps>= ({activity, cancelSelectActivity,openForm}) =>{
     return(
         <Card fluid>
     <Image src={`/assets/categoryImages/${activity.category}.jpg`} wrapped ui={false} />
@@ -30,3 +30,4 @@ export default function ActivityDetails({activity, cancelSelectActivity,openForm
     )
 
 }
+export default ActivityDetails;
