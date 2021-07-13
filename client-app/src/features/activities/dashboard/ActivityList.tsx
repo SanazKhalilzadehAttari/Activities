@@ -1,20 +1,17 @@
-import React, { SyntheticEvent } from "react";
+import { observer } from "mobx-react-lite";
+import React from "react";
+import { useContext } from "react";
 import { Button, Item, Label, Segment } from "semantic-ui-react";
-import { Activity } from "../../../app/models/Activity";
+import ActivityStore from "../../../app/stores/activityStore";
 
-interface IProps{
-    activities : Activity[];
-    selectActivity: (id: string) => void ;
-    deleteActivity:(e:SyntheticEvent<HTMLButtonElement>,id:string) => void;
-    submitting: boolean;
-    target:string
-  
-}
-const ActivityList:React.FC<IProps> = ({target,submitting,activities, selectActivity,deleteActivity })=>{
+
+const ActivityList:React.FC = ()=>{
+    const activityStore = useContext(ActivityStore);
+    const{activitiesByDate,deleteActivity,target,submitting}= activityStore;
     return(
         <Segment>
             <Item.Group divided>
-            {activities.map(activity => (
+            {activitiesByDate.map(activity => (
                 <Item key={activity.id}>
                     <Item.Content>
                         <Item.Header as="a">{activity.title}</Item.Header>
@@ -24,9 +21,9 @@ const ActivityList:React.FC<IProps> = ({target,submitting,activities, selectActi
                            <div>{activity.city},{activity.venue}</div> 
                         </Item.Description>
                         <Item.Extra>
-                            <Button  onClick={() => selectActivity(activity.id)} floated="right" content="View" color="blue" />
+                            <Button  onClick={() => activityStore.selectActivity(activity.id)} floated="right" content="View" color="blue" />
                             <Button   name={activity.id} 
-                            loading={target== activity.id && submitting} 
+                            loading={target=== activity.id && submitting} 
                              onClick={(e) => deleteActivity(e,activity.id)} 
                              floated="right" content="Delete" color="red" />
                                 <Label basic content={activity.category}/>
@@ -40,4 +37,4 @@ const ActivityList:React.FC<IProps> = ({target,submitting,activities, selectActi
         </Segment>
     )
 }
-export default ActivityList;
+export default observer(ActivityList);
