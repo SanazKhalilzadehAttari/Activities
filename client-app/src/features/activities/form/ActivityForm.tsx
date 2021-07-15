@@ -4,31 +4,44 @@ import { ChangeEvent } from "react";
 import { useState } from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
 import ActivityStore from "../../../app/stores/activityStore";
-
-const ActivityForm: React.FC = ()=>{
+import{RouteComponentProps} from 'react-router';
+import { useEffect } from "react";
+import { Activity } from "../../../app/models/Activity";
+interface DetailParams{
+    id:string
+  }
+const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match,history})=>{
     const activityStore = useContext(ActivityStore);
-   const{selectedActivity,createActivity,editActivity,submitting,closeForm} = activityStore;
-    const initialState =() =>{
-    if(selectedActivity){
-        return selectedActivity;
-    } else {
-        return{
-            id:'',
-            title:'',
-            category :'',
-            description:'',
-            date:'',
-            city:'',
-            venue:''   
-        }  
-    }
-}
-    const[activity,setActivity]= useState(initialState);
+   const{
+       activity:initialFormState,
+       createActivity,
+       editActivity,
+       submitting,
+       loadActivity,
+    clearActivity} = activityStore;
+   useEffect(()=>{
+       if(match.params.id){
+        loadActivity(match.params.id).then(()=> initialFormState && setActivity(initialFormState))  
+       }
+   return()=>{
+       clearActivity()
+   }
+   },[clearActivity,match.params.id,loadActivity,initialFormState]);
+
+    const[activity,setActivity]= useState<Activity>({
+        id:'',
+        title:'',
+        category :'',
+        description:'',
+        date:'',
+        city:'',
+        venue:''  
+    });
     function handelSubmit(){
         if(activity.id !== ''){
-            editActivity(activity);
+            editActivity(activity).then(()=> history.push(`/activities/${activity.id}`));;
         }else{
-            createActivity(activity);
+            createActivity(activity).then(()=> history.push(`/activities/${activity.id}`));
         }
         
     }
@@ -38,7 +51,7 @@ const ActivityForm: React.FC = ()=>{
     }
     return(
         <Segment clearing>
-            <Form onSubmit={handelSubmit} autoCompelete='off'>
+            <Form onSubmit={handelSubmit} autocompelete='off'>
                 <Form.Input placeholder='Title' value={activity.title} name='title' onChange={handelInputChange}/>
                 <Form.TextArea placeholder='Description'value={activity.description} name='description' onChange={handelInputChange}/>
                 <Form.Input placeholder='Category'value={activity.category} name='category' onChange={handelInputChange}/>
@@ -46,7 +59,7 @@ const ActivityForm: React.FC = ()=>{
                 <Form.Input placeholder='City'value={activity.city} name='city' onChange={handelInputChange}/>
                 <Form.Input placeholder='Venue'value={activity.venue} name='venue' onChange={handelInputChange}/>
                <Button  loading={submitting} floated='right' positive type="submit" content="Submit" ></Button>
-               <Button  floated='right'  type="submit" content="Cancel" onClick={closeForm}></Button>
+               <Button  floated='right'  type="submit" content="Cancel" onClick={()=>history.push(`/activities`)}></Button>
             </Form>
         </Segment>
     )

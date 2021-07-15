@@ -3,6 +3,7 @@ import React from "react";
 import { useContext } from "react";
 import { Button, Item, Label, Segment } from "semantic-ui-react";
 import ActivityStore from "../../../app/stores/activityStore";
+import { Link } from "react-router-dom";
 
 
 const ActivityList:React.FC = ()=>{
@@ -21,7 +22,8 @@ const ActivityList:React.FC = ()=>{
                            <div>{activity.city},{activity.venue}</div> 
                         </Item.Description>
                         <Item.Extra>
-                            <Button  onClick={() => activityStore.selectActivity(activity.id)} floated="right" content="View" color="blue" />
+                                    
+                            <Button  as={Link} to={`/activities/${activity.id}`} floated="right" content="View" color="blue" />
                             <Button   name={activity.id} 
                             loading={target=== activity.id && submitting} 
                              onClick={(e) => deleteActivity(e,activity.id)} 
