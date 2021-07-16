@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { ChangeEvent } from "react";
 import { useState } from "react";
-import { Button, Form, Segment } from "semantic-ui-react";
+import { Button, Form, Grid, GridColumn, Segment } from "semantic-ui-react";
 import ActivityStore from "../../../app/stores/activityStore";
 import{RouteComponentProps} from 'react-router';
 import { useEffect } from "react";
@@ -50,7 +50,9 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match,histor
         setActivity({...activity,[name]:value})
     }
     return(
-        <Segment clearing>
+        <Grid>
+            <Grid.Column width={10}>
+            <Segment clearing>
             <Form onSubmit={handelSubmit} autocompelete='off'>
                 <Form.Input placeholder='Title' value={activity.title} name='title' onChange={handelInputChange}/>
                 <Form.TextArea placeholder='Description'value={activity.description} name='description' onChange={handelInputChange}/>
@@ -62,6 +64,9 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({match,histor
                <Button  floated='right'  type="submit" content="Cancel" onClick={()=>history.push(`/activities`)}></Button>
             </Form>
         </Segment>
+            </Grid.Column>
+        </Grid>
+        
     )
 }
 export default observer(ActivityForm);
