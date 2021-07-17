@@ -1,5 +1,6 @@
 
 using System;
+using FluentValidation;
 
 namespace Domain
 {
@@ -13,4 +14,5 @@ namespace Domain
         public string City { get; set; }
         public string Venue { get; set; }
     }
+  
 }

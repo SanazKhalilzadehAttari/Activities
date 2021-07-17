@@ -140,8 +140,10 @@ try {
   });
 
 } catch (error) {
-  console.log(error);
-  this.loadingInitial = false;
+  runInAction(()=>{
+    this.loadingInitial = false;
+  });
+ console.log(error);
 }
 
 
