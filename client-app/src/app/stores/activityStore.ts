@@ -3,6 +3,8 @@ import { createContext, SyntheticEvent } from "react";
 import agent from "../api/agent";
 import { Activity } from "../models/Activity";
 import {v4 as uuid} from 'uuid';
+import { history } from "../..";
+import { toast } from "react-toastify";
 
 
 configure({enforceActions: 'always'});
@@ -26,11 +28,11 @@ export class ActivityStore{
 }
 groupActivitiesByDate(activities:Activity[]){
   const sortedActivities = activities.sort(
-    (a,b)=>Date.parse(a.date)-Date.parse(b.date)
+    (a,b)=>a.date!.getTime()-b.date!.getTime()
 
   )
   return Object.entries(sortedActivities.reduce((activities,activity)=>{
-const date = activity.date.split('T')[0];
+const date = activity.date.toISOString().split('T')[0];
 activities[date] = activities[date]?[...activities[date],activity]:[activity];
 return activities;
   },{}as{[key:string]:Activity[]}));
@@ -41,7 +43,7 @@ return activities;
       const activities = await agent.Activities.list()
       runInAction( ()=> {
         activities.forEach((activity) => {
-        activity.date = activity.date.split('.')[0];
+        activity.date = new Date(activity.date);
         this.activityRegistry.set(activity.id,activity);
       });
       this.loadingInitial = false;
@@ -57,19 +59,23 @@ return activities;
  };
   
  @action createActivity=async(activity:Activity)=>{
+  console.log(activity);
    this.submitting = true;
    activity.id = uuid();
   
    try {
     await agent.Activities.create(activity);
+   
     runInAction(()=>{
+      activity.date = new Date(activity.date);  
       this.activityRegistry.set(activity.id,activity);
       this.editMode=false;
       this.submitting=false;
     });
-   
+    history.push(`/activities/${activity.id}`);
    } catch (error) {
     runInAction(()=>{
+      toast.error("Problem submitting the Error")
      console.log(error);
      this.submitting=false;
     });
@@ -85,6 +91,7 @@ return activities;
   this.editMode=false;
   this.submitting=false;
 });
+ history.push(`/activities/${activity.id}`);
   } catch (error) {
     runInAction(()=>{
     console.log(error);
@@ -127,18 +134,24 @@ this.target ="";
 }
 @action loadActivity =async(id:string)=>{
   let activity = this.getActivity(id);
+ 
 if(activity) {
  this.activity=activity;
+ return activity;
 }else{
 this.loadingInitial = true;
 try {
   activity = await agent.Activities.details(id);
+
   runInAction(()=>{
+    activity.date = new Date(activity.date);  
+    this.activity = activity;
+    this.activityRegistry.set(activity.id,activity);
     this.selectActivity(activity.id);
     this.loadingInitial = false;
     this.submitting = false;
   });
-
+return activity;
 } catch (error) {
   runInAction(()=>{
     this.loadingInitial = false;

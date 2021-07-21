@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import ActivityStore from "../../../app/stores/activityStore";
 import { observer } from "mobx-react-lite";
 import { Activity } from "../../../app/models/Activity";
+import {format} from "date-fns";
+
 
 
 const ActivityListItem: React.FC<{ activity: Activity }> = ({ activity }) => {
@@ -30,7 +32,7 @@ const ActivityListItem: React.FC<{ activity: Activity }> = ({ activity }) => {
                
             </Segment>
             <Segment>
-                <Icon name="clock" />{activity.date}
+                <Icon name="clock" />{format(activity.date,'h:mm a')}
                 <Icon name="marker" />{activity.venue},{activity.city}
             </Segment>
             <Segment secondary>

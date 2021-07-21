@@ -8,6 +8,9 @@ import reportWebVitals from './reportWebVitals';
 import { Router} from 'react-router-dom';
 import ScrollToTop from './app/layout/ScrollToTop';
 import 'react-toastify/dist/ReactToastify.min.css';
+import "react-widgets/styles.css";
+import DateFnsLocalizer from "react-widgets-date-fns";
+new DateFnsLocalizer();
 
 export const history= createBrowserHistory();
 ReactDOM.render(
