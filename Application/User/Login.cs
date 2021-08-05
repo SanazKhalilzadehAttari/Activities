@@ -45,18 +45,20 @@ namespace Application.User
               var user =  _userManager.Users.FirstOrDefault(x=> x.Email == request.Email);
                 var result = await _signInManager.CheckPasswordSignInAsync(user,request.Password,false);
                   if(user == null){
-                    new AppExceptions(401,"User Excption",null);
+                   throw new AppExceptions(401,"User Excption",null);
                     }
-                    if(!result.Succeeded){
-                         new AppExceptions(401,"User Excption",null);
-                    }
-                     
-                         return new User{
+                    if(result.Succeeded){
+                          return new User{
                              DisplayName = user.DisplayName,
                              Token=_jwtGenerator.CreateToken(user),
                              UserName = user.UserName,
                              Image = null
                          };
+                       
+                    }
+                      throw new AppExceptions(401,"User Excption",null);
+                     
+                       
               
               
                    

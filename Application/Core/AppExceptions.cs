@@ -1,6 +1,8 @@
+using System;
+
 namespace Application.Core
 {
-    public class AppExceptions
+    public class AppExceptions: Exception
     {
         public AppExceptions(int statusCode, string Message ,string details = null)
         {

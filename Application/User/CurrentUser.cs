@@ -12,15 +12,8 @@ namespace Application.User
     public class CurrentUser
     {
               public class Command : IRequest<User>{
-         public string Email { get; set; }
-         public string Password { get; set; }
         }
-       public class QueryValidator:AbstractValidator<Command>{
-           public QueryValidator(){
-               RuleFor(x => x.Email).NotEmpty();
-               RuleFor(x =>x.Password).NotEmpty();
-           }
-       }
+      
         public class Handler : IRequestHandler<Command,User>
         {
               private readonly UserManager<AppUser> _userManager;
