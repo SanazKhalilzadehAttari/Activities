@@ -5,12 +5,13 @@ import ActivityStore from "../../../app/stores/activityStore";
 import { observer } from "mobx-react-lite";
 import { Activity } from "../../../app/models/Activity";
 import {format} from "date-fns";
+import { RootStoreContext } from "../../../app/stores/rootStore";
 
 
 
 const ActivityListItem: React.FC<{ activity: Activity }> = ({ activity }) => {
-    const activityStore = useContext(ActivityStore);
-    const { deleteActivity, target, submitting } = activityStore;
+    const rootStore = useContext(RootStoreContext);
+    const { deleteActivity, target, submitting } = rootStore.activityStore;
     return (
         <Segment.Group>
             <Segment>
