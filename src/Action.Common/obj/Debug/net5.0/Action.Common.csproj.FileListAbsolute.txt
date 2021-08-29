@@ -1,0 +1,12 @@
+C:\Users\khalilzadeh\source\repos\Actio\src\Action.Common\bin\Debug\net5.0\Action.Common.deps.json
+C:\Users\khalilzadeh\source\repos\Actio\src\Action.Common\bin\Debug\net5.0\Action.Common.dll
+C:\Users\khalilzadeh\source\repos\Actio\src\Action.Common\bin\Debug\net5.0\ref\Action.Common.dll
+C:\Users\khalilzadeh\source\repos\Actio\src\Action.Common\bin\Debug\net5.0\Action.Common.pdb
+C:\Users\khalilzadeh\source\repos\Actio\src\Action.Common\obj\Debug\net5.0\Action.Common.csproj.AssemblyReference.cache
+C:\Users\khalilzadeh\source\repos\Actio\src\Action.Common\obj\Debug\net5.0\Action.Common.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\khalilzadeh\source\repos\Actio\src\Action.Common\obj\Debug\net5.0\Action.Common.AssemblyInfoInputs.cache
+C:\Users\khalilzadeh\source\repos\Actio\src\Action.Common\obj\Debug\net5.0\Action.Common.AssemblyInfo.cs
+C:\Users\khalilzadeh\source\repos\Actio\src\Action.Common\obj\Debug\net5.0\Action.Common.csproj.CoreCompileInputs.cache
+C:\Users\khalilzadeh\source\repos\Actio\src\Action.Common\obj\Debug\net5.0\Action.Common.dll
+C:\Users\khalilzadeh\source\repos\Actio\src\Action.Common\obj\Debug\net5.0\ref\Action.Common.dll
+C:\Users\khalilzadeh\source\repos\Actio\src\Action.Common\obj\Debug\net5.0\Action.Common.pdb
